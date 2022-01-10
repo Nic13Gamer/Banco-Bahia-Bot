@@ -1,6 +1,6 @@
 ﻿namespace BancoBahiaBot.Utils
 {
-    class StringUtils
+    public static class StringUtils
     {
         public static string RemoveAccents(string text)
         {

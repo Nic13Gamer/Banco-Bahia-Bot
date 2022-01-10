@@ -9,7 +9,7 @@ namespace BancoBahiaBot.Modules
 {
     public class DebugCommands : InteractionModuleBase<SocketInteractionContext>
     {
-        [SlashCommand("Debug", "debug test slash command")]
+        [SlashCommand("DebugCmd", "debug test slash command")]
         public async Task DebugCommand()
         {
             await RespondAsync("it works!");

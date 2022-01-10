@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace BancoBahiaBot.Utils
 {
-    class NetUtils
+    public static class NetUtils
     {
         public static readonly HttpClient httpClient = new();
 
@@ -22,7 +22,7 @@ namespace BancoBahiaBot.Utils
         }
     }
 
-    class HttpResponse
+    public class HttpResponse
     {
         public HttpResponse(int status, string content)
         {

@@ -14,40 +14,9 @@ namespace BancoBahiaBot
 
         public static async Task Start()
         {
-            await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), null);
+            await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), Bot.Services);
 
             client.InteractionCreated += HandleInteraction;
-
-            interactionService.SlashCommandExecuted += SlashCommandExecuted;
-        }
-
-        static Task SlashCommandExecuted(SlashCommandInfo arg1, IInteractionContext arg2, IResult arg3)
-        {
-            if (!arg3.IsSuccess)
-            {
-                switch (arg3.Error)
-                {
-                    case InteractionCommandError.UnmetPrecondition:
-                        // implement
-                        break;
-                    case InteractionCommandError.UnknownCommand:
-                        // implement
-                        break;
-                    case InteractionCommandError.BadArgs:
-                        // implement
-                        break;
-                    case InteractionCommandError.Exception:
-                        // implement
-                        break;
-                    case InteractionCommandError.Unsuccessful:
-                        // implement
-                        break;
-                    default:
-                        break;
-                }
-            }
-
-            return Task.CompletedTask;
         }
 
         static async Task HandleInteraction(SocketInteraction arg)
@@ -55,7 +24,7 @@ namespace BancoBahiaBot
             try
             {
                 var ctx = new SocketInteractionContext(client, arg);
-                await interactionService.ExecuteCommandAsync(ctx, null);
+                await interactionService.ExecuteCommandAsync(ctx, Bot.Services);
             }
             catch (Exception ex)
             {
