@@ -1,7 +1,6 @@
 ﻿using Discord;
 using Discord.Interactions;
 using Discord.WebSocket;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -18,8 +17,6 @@ namespace BancoBahiaBot
         public static readonly SaveManager.BotOptions BotOptions = SaveManager.LoadBotOptions();
         public static readonly string API_KEY = BotOptions.apiKey;
 
-        public static IServiceProvider Services { get; private set; }
-
         public static DiscordSocketClient Client { get; private set; }
         public static InteractionService InteractionService { get; private set; }
 
@@ -27,10 +24,8 @@ namespace BancoBahiaBot
         {
             Console.Title = "Banco Bahia Bot";
 
-            Services = ConfigureServices();
-
-            Client = Services.GetRequiredService<DiscordSocketClient>();
-            InteractionService = Services.GetRequiredService<InteractionService>();
+            Client = new();
+            InteractionService = new(Client);
 
             Client.Ready += async () =>
             {
@@ -39,6 +34,9 @@ namespace BancoBahiaBot
                 else
                     await InteractionService.RegisterCommandsGloballyAsync(true);
 
+                // start handlers that need the bot to be ready
+
+                // ---
 
                 Terminal.Start();
 
@@ -57,14 +55,6 @@ namespace BancoBahiaBot
             // ---
 
             await Task.Delay(-1);
-        }
-
-        static ServiceProvider ConfigureServices()
-        {
-            return new ServiceCollection()
-                .AddSingleton<DiscordSocketClient>()
-                .AddSingleton(x => new InteractionService(x.GetRequiredService<DiscordSocketClient>()))
-                .BuildServiceProvider();
         }
     }
 }

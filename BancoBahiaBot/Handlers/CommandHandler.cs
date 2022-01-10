@@ -14,7 +14,7 @@ namespace BancoBahiaBot
 
         public static async Task Start()
         {
-            await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), Bot.Services);
+            await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), null);
 
             client.InteractionCreated += HandleInteraction;
         }
@@ -24,7 +24,7 @@ namespace BancoBahiaBot
             try
             {
                 var ctx = new SocketInteractionContext(client, arg);
-                await interactionService.ExecuteCommandAsync(ctx, Bot.Services);
+                await interactionService.ExecuteCommandAsync(ctx, null);
             }
             catch (Exception ex)
             {
