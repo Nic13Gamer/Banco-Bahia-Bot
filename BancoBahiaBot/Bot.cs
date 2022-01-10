@@ -39,7 +39,7 @@ namespace BancoBahiaBot
 
                 Terminal.WriteLine("Bot started successfully!", Terminal.MessageType.INFO);
 
-                await Client.SetGameAsync(/*"Sou um banco que tem seu próprio dinheiro virtual e muito mais!"*/ "COM VERSAO NOVA!");
+                await Client.SetGameAsync("Sou um banco que tem seu próprio dinheiro virtual e muito mais!");
             };
 
             await Client.LoginAsync(TokenType.Bot, BotOptions.token);
