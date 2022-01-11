@@ -10,7 +10,6 @@ namespace BancoBahiaBot
     {
         static readonly string botDataJsonPath = Bot.DATA_PATH + "/botData.json";
 
-        /*
         public static void SaveAll()
         {
             BotData data = new();
@@ -23,6 +22,7 @@ namespace BancoBahiaBot
             {
                 SaveUser saveUser = new(user.id, user.money, user.lastDaily);
 
+                /*
                 #region Save properties
 
                 List<SaveUser.SaveUserProperty> properties = new();
@@ -58,6 +58,7 @@ namespace BancoBahiaBot
                 saveUser.stocks = stocks.ToArray();
 
                 #endregion
+                */
 
                 saveUsers.Add(saveUser);
             }
@@ -67,7 +68,7 @@ namespace BancoBahiaBot
             #endregion
 
             #region Save stocks
-
+            /*
             List<SaveStock> saveStocks = new();
 
             foreach (Stock stock in StockHandler.GetStocks())
@@ -89,7 +90,7 @@ namespace BancoBahiaBot
             }
 
             data.guilds = saveGuilds.ToArray();
-
+            */
             #endregion
 
             string jsonString = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -123,7 +124,7 @@ namespace BancoBahiaBot
                     user.lastDaily = saveUser.lastDaily;
 
                     #region Load properties
-
+                    /*
                     List<UserProperty> properties = new();
                     foreach (SaveUser.SaveUserProperty property in saveUser.properties)
                     {
@@ -158,7 +159,7 @@ namespace BancoBahiaBot
                     }
 
                     user.stocks = stocks.ToArray();
-
+                    */
                     #endregion
                 }
                 catch (Exception e)
@@ -170,7 +171,7 @@ namespace BancoBahiaBot
             #endregion
 
             #region Load stocks
-
+            /*
             foreach (SaveStock saveStock in data.stocks)
             {
                 try
@@ -204,10 +205,9 @@ namespace BancoBahiaBot
                     Terminal.WriteLine($"Error while loading guild ({saveGuild.id}): {e.Message}");
                 }
             }
-
+            */
             #endregion
         }
-        */
 
         #region Bot data classes
 
@@ -317,6 +317,8 @@ namespace BancoBahiaBot
         {
             public string token;
             public string apiKey;
+
+            public ulong botOwnerId;
         }
 
         #endregion

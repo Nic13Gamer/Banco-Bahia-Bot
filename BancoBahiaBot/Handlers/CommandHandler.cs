@@ -2,7 +2,9 @@
 using Discord.Interactions;
 using Discord.WebSocket;
 using System;
+using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BancoBahiaBot
@@ -17,22 +19,36 @@ namespace BancoBahiaBot
             await interactionService.AddModulesAsync(Assembly.GetEntryAssembly(), null);
 
             client.InteractionCreated += HandleInteraction;
+
+            interactionService.SlashCommandExecuted += SlashCommandExecuted;
         }
 
-        static async Task HandleInteraction(SocketInteraction arg)
+        static async Task SlashCommandExecuted(SlashCommandInfo command, IInteractionContext context, IResult result)
         {
-            try
+            if (!result.IsSuccess && result.Error != InteractionCommandError.UnknownCommand)
             {
-                var ctx = new SocketInteractionContext(client, arg);
-                await interactionService.ExecuteCommandAsync(ctx, null);
-            }
-            catch (Exception ex)
-            {
-                Terminal.WriteLine(ex, Terminal.MessageType.WARN);
+                string reply = $"Alguma coisa deu errado! Motivo: " + result.ErrorReason;
 
-                if (arg.Type == InteractionType.ApplicationCommand)
-                    await arg.GetOriginalResponseAsync().ContinueWith(async (msg) => await msg.Result.DeleteAsync());
+                Terminal.WriteLine($"Bot use error [{result.ErrorReason}] by {context.User} ({context.User.Id})", Terminal.MessageType.WARN);
+                
+                await context.Interaction.RespondAsync(reply, ephemeral: true);
+                return;
             }
+
+            SaveManager.SaveAll();
+        }
+
+        static Task HandleInteraction(SocketInteraction arg)
+        {
+            var context = new SocketInteractionContext(client, arg);
+
+            if(context.User.IsBot || context.Guild == null) return null;
+            UserHandler.CreateUser(context.User.Id);
+
+            // execute the command
+            interactionService.ExecuteCommandAsync(context, null);
+
+            return null;
         }
     }
 }

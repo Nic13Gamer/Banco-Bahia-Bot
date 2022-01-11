@@ -10,11 +10,19 @@ namespace BancoBahiaBot
 {
     public static class Terminal
     {
+        static readonly string path = Bot.DATA_PATH + "/log.txt";
         static readonly List<string> consoleLog = new();
 
         public static void Start()
         {
-            /*
+            string logStart = $"LOG DATE (LOCAL PC): {DateTime.Now}" +
+                $"\nLOG DATE (UTC): {DateTime.UtcNow}" +
+                $"\nORIGINAL LOG PATH: {path}" +
+                "\n\n\n--- LOG START ---\n";
+
+            consoleLog.Add(logStart + "\n");
+
+       
             Thread thread = new(async () =>
             {
                 while (true)
@@ -23,7 +31,7 @@ namespace BancoBahiaBot
                     {
                         string[] args = Console.ReadLine().Split(" ");
 
-                        switch (args[0])
+                        switch (args[0].ToLower())
                         {
                             case "bot_set_game":
                                 {
@@ -60,6 +68,25 @@ namespace BancoBahiaBot
 
                                     break;
                                 }
+
+                            case "save_all":
+                                {
+                                    SaveManager.SaveAll();
+
+                                    break;
+                                }
+
+                            case "owner_money_add":
+                                {
+                                    var botOwnerId = Bot.BotOptions.botOwnerId;
+                                    User user = UserHandler.GetUser(botOwnerId);
+
+                                    user.money += int.Parse(args[1]);
+
+                                    WriteLine($"Added ${args[1]} to bot owner", MessageType.CMD);
+
+                                    break;
+                                }
                         }
                     }
                     catch (Exception e)
@@ -68,9 +95,7 @@ namespace BancoBahiaBot
                     }
                 }
             });
-
             thread.Start();
-            */
         }
 
         public static void WriteLine(object msg, MessageType type = MessageType.INFO, ConsoleColor color = ConsoleColor.White)
@@ -91,6 +116,10 @@ namespace BancoBahiaBot
                 Console.Write($"[{type}] ");
             } else if (type == MessageType.CMD)
             {
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.Write($"[{type}] ");
+            } else if (type == MessageType.API)
+            {
                 Console.ForegroundColor = ConsoleColor.DarkYellow;
                 Console.Write($"[{type}] ");
             }
@@ -98,6 +127,8 @@ namespace BancoBahiaBot
             Console.ForegroundColor = color;
             Console.WriteLine(msg);
             Console.ForegroundColor = ConsoleColor.White;
+
+            SaveLog();
         }
 
         public static void AddToLog(string msg, MessageType type)
@@ -107,15 +138,14 @@ namespace BancoBahiaBot
 
         public static void SaveLog()
         {
-            string log = string.Empty;
-
-            foreach(string line in consoleLog)
-                log += line;
-
             try
             {
-                File.WriteAllText(Bot.DATA_PATH + "/log.txt", log);
-                WriteLine($"Saved log to {Bot.DATA_PATH + "/log.txt"}!", Terminal.MessageType.INFO);
+                string log = string.Empty;
+
+                foreach(string line in consoleLog)
+                    log += line;
+
+                File.WriteAllText(path, log);
             }
             catch (Exception e)
             {
@@ -128,7 +158,8 @@ namespace BancoBahiaBot
             INFO,
             WARN,
             ERROR,
-            CMD
+            CMD,
+            API
         }
     }
 }
