@@ -10,7 +10,7 @@ namespace BancoBahiaBot.Modules
         readonly Random random = new();
 
         [SlashCommand("atm", "Mostra o seu dinheiro ou o de outro usuário")]
-        public async Task AtmCommand(IGuildUser mention = null)
+        public async Task AtmCommand([Summary("user")]IGuildUser mention = null)
         {
             var discordUser = (IUser)mention ?? Context.User;
             if (discordUser.IsBot) return;
@@ -22,7 +22,7 @@ namespace BancoBahiaBot.Modules
         }
 
         [SlashCommand("pay", "Transfira a quantidade escolhida de dinheiro para outro usuário")]
-        public async Task PayCommand(IGuildUser mention, int quantity)
+        public async Task PayCommand([Summary("user")]IGuildUser mention, int quantity)
         {
             if (mention.IsBot || mention == Context.User) return;
 
@@ -50,7 +50,7 @@ namespace BancoBahiaBot.Modules
         }
 
         [SlashCommand("steal", "Tente roubar dinheiro de outro usuário, mas tome cuidado com a polícia 🚓")]
-        public async Task StealCommand(IGuildUser mention)
+        public async Task StealCommand([Summary("user")]IGuildUser mention)
         {
             if (mention.IsBot || mention == Context.User) return;
 

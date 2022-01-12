@@ -19,7 +19,8 @@ namespace BancoBahiaBot
                 (
                     id: id.ToString(),
                     money: 0,
-                    lastDaily: DateTime.Now.AddDays(-1)
+                    lastDaily: DateTime.Now.AddDays(-1),
+                    stocks: Array.Empty<UserStock>()
                 );
 
             users.Add(newUser);
@@ -31,15 +32,21 @@ namespace BancoBahiaBot
 
     public class User
     {
-        public User(string id, int money, DateTime lastDaily)
+        public User(string id, int money, DateTime lastDaily, UserStock[] stocks)
         {
             this.id = id;
             this.money = money;
             this.lastDaily = lastDaily;
+
+            this.stocks = stocks;
         }
 
         public string id;
         public int money;
         public DateTime lastDaily;
+
+        //public UserProperty[] properties;
+        //public UserItem[] items;
+        public UserStock[] stocks;
     }
 }

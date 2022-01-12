@@ -34,7 +34,7 @@ namespace BancoBahiaBot
                 await context.Interaction.RespondAsync(reply, ephemeral: true);
                 return;
             }
-
+            
             SaveManager.SaveAll();
         }
 

@@ -2,6 +2,7 @@
 using Discord.Interactions;
 using Discord.WebSocket;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BancoBahiaBot
@@ -9,7 +10,8 @@ namespace BancoBahiaBot
     public static class Bot
     {
         public static readonly bool DEBUG = true; // change in release
-        public static readonly LogSeverity API_LOG_LEVEL = LogSeverity.Info; // change in release; default is LogSeverity.Info
+        public static readonly LogSeverity API_LOG_LEVEL = LogSeverity.Info; // change in release; default: Info
+        public static readonly GatewayIntents GATEWAY_INTENTS = GatewayIntents.AllUnprivileged; // change in release; default: AllUnprivileged
 
         public static readonly string DATA_PATH = "C:/Users/nicho/Desktop/Banco Bahia/Data"; //Directory.GetCurrentDirectory() + "/Data";  THIS IS A OVERRIDE FOR DEVELOPMENT
         public static readonly string WEBSITE = "http://localhost:5500"; // THIS IS A OVERRIDE FOR DEVELOPMENT
@@ -21,32 +23,40 @@ namespace BancoBahiaBot
         public static DiscordSocketClient Client { get; private set; }
         public static InteractionService InteractionService { get; private set; }
 
+        static bool ranReadyHandler = false;
+
         public static async Task Start()
         {
             Console.Title = "Banco Bahia Bot";
             Terminal.Start();
 
-            Client = new(new() { LogLevel = API_LOG_LEVEL });
+            Client = new(new() { GatewayIntents = GATEWAY_INTENTS, LogLevel = API_LOG_LEVEL });
             InteractionService = new(Client);
 
             Client.Ready += async () =>
             {
+                if (ranReadyHandler)
+                    return;
+
                 if (DEBUG)
-                    await InteractionService.RegisterCommandsToGuildAsync(805241408544964669, true); // ursinhus luminosus SERVER
+                    await InteractionService.RegisterCommandsToGuildAsync(867583512042143774, true); // alone SERVER /// ursinhus luminosus -  805241408544964669
                 else
                     await InteractionService.RegisterCommandsGloballyAsync(true);
 
                 // start handlers that need the bot to be ready
 
                 SaveManager.LoadAll();
-
+                
                 //ReactionHandler.Start();
 
                 // ---
 
                 Terminal.WriteLine("Bot started successfully!", Terminal.MessageType.INFO);
 
+                await Client.SetStatusAsync(UserStatus.Invisible);
                 await Client.SetGameAsync(/*"Sou um banco que tem seu próprio dinheiro virtual e muito mais!"*/ "com nova versao!");
+
+                ranReadyHandler = true;
             };
 
             Client.Log += (log) =>
@@ -62,13 +72,13 @@ namespace BancoBahiaBot
 
             //ItemHandler.Start();
             //PropertyHandler.Start();
-            //StockHandler.Start();
+            StockHandler.Start();
 
             await CommandHandler.Start();
 
             // ---
 
-            await Task.Delay(-1);
+            await Task.Delay(Timeout.Infinite);
         }
     }
 }
