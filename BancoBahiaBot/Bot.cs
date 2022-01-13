@@ -39,7 +39,7 @@ namespace BancoBahiaBot
                     return;
 
                 if (DEBUG)
-                    await InteractionService.RegisterCommandsToGuildAsync(867583512042143774, true); // alone SERVER /// ursinhus luminosus -  805241408544964669
+                    await InteractionService.RegisterCommandsToGuildAsync(805241408544964669, true); // ursinhus luminosu
                 else
                     await InteractionService.RegisterCommandsGloballyAsync(true);
 
@@ -53,7 +53,6 @@ namespace BancoBahiaBot
 
                 Terminal.WriteLine("Bot started successfully!", Terminal.MessageType.INFO);
 
-                await Client.SetStatusAsync(UserStatus.Invisible);
                 await Client.SetGameAsync(/*"Sou um banco que tem seu próprio dinheiro virtual e muito mais!"*/ "com nova versao!");
 
                 ranReadyHandler = true;
