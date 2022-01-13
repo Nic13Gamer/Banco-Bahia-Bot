@@ -22,9 +22,8 @@ namespace BancoBahiaBot
             {
                 SaveUser saveUser = new(user.id, user.money, user.lastDaily);
 
-                /*
                 #region Save properties
-
+                /*
                 List<SaveUser.SaveUserProperty> properties = new();
                 foreach (UserProperty property in user.properties)
                 {
@@ -44,7 +43,7 @@ namespace BancoBahiaBot
                 }
 
                 saveUser.items = items.ToArray();
-
+                */
                 #endregion
 
                 #region Save stocks
@@ -58,7 +57,6 @@ namespace BancoBahiaBot
                 saveUser.stocks = stocks.ToArray();
 
                 #endregion
-                */
 
                 saveUsers.Add(saveUser);
             }
@@ -68,7 +66,7 @@ namespace BancoBahiaBot
             #endregion
 
             #region Save stocks
-            /*
+
             List<SaveStock> saveStocks = new();
 
             foreach (Stock stock in StockHandler.GetStocks())
@@ -81,7 +79,7 @@ namespace BancoBahiaBot
             #endregion
 
             #region Save guilds
-
+            /*
             List<SaveGuild> saveGuilds = new();
 
             foreach (Guild guild in GuildHandler.GetGuilds())
@@ -144,7 +142,7 @@ namespace BancoBahiaBot
                     }
 
                     user.items = items.ToArray();
-
+                    */
                     #endregion
 
                     #region Load stocks
@@ -159,7 +157,7 @@ namespace BancoBahiaBot
                     }
 
                     user.stocks = stocks.ToArray();
-                    */
+                    
                     #endregion
                 }
                 catch (Exception e)
@@ -171,7 +169,7 @@ namespace BancoBahiaBot
             #endregion
 
             #region Load stocks
-            /*
+            
             foreach (SaveStock saveStock in data.stocks)
             {
                 try
@@ -191,7 +189,7 @@ namespace BancoBahiaBot
             #endregion
 
             #region Load guilds
-
+            /*
             foreach (SaveGuild saveGuild in data.guilds)
             {
                 try

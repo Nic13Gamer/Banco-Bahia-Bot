@@ -73,6 +73,8 @@ namespace BancoBahiaBot
                                 {
                                     SaveManager.SaveAll();
 
+                                    WriteLine("Saved bot data", MessageType.CMD);
+
                                     break;
                                 }
 
