@@ -20,7 +20,7 @@ namespace BancoBahiaBot
 
             foreach (User user in UserHandler.GetUsers())
             {
-                SaveUser saveUser = new(user.id, user.money, user.lastDaily);
+                SaveUser saveUser = new(user.id, user.money, user.lastDaily, user.banned);
 
                 #region Save properties
                 /*
@@ -120,6 +120,7 @@ namespace BancoBahiaBot
 
                     user.money = saveUser.money;
                     user.lastDaily = saveUser.lastDaily;
+                    user.banned = saveUser.banned;
 
                     #region Load properties
                     /*
@@ -218,16 +219,18 @@ namespace BancoBahiaBot
 
         class SaveUser
         {
-            public SaveUser(string id, int money, DateTime lastDaily)
+            public SaveUser(string id, int money, DateTime lastDaily, bool banned)
             {
                 this.id = id;
                 this.money = money;
                 this.lastDaily = lastDaily;
+                this.banned = banned;
             }
 
             public string id;
             public int money;
             public DateTime lastDaily;
+            public bool banned;
 
             public SaveUserProperty[] properties;
             public SaveUserItem[] items;

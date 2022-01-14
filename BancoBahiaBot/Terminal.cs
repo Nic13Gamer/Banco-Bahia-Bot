@@ -89,6 +89,26 @@ namespace BancoBahiaBot
 
                                     break;
                                 }
+
+                            case "user_ban":
+                                {
+                                    User user = UserHandler.GetUser(ulong.Parse(args[1]));
+                                    user.banned = true;
+
+                                    WriteLine($"Banned {args[1]}", MessageType.CMD);
+
+                                    break;
+                                }
+
+                            case "user_unban":
+                                {
+                                    User user = UserHandler.GetUser(ulong.Parse(args[1]));
+                                    user.banned = false;
+
+                                    WriteLine($"Unbanned {args[1]}", MessageType.CMD);
+
+                                    break;
+                                }
                         }
                     }
                     catch (Exception e)

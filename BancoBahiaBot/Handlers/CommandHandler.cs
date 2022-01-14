@@ -43,10 +43,20 @@ namespace BancoBahiaBot
             var context = new SocketInteractionContext(client, arg);
 
             if(context.User.IsBot || context.Guild == null) return null;
-            UserHandler.CreateUser(context.User.Id);
+            User user = UserHandler.GetUser(context.User.Id);
 
-            // execute the command
-            interactionService.ExecuteCommandAsync(context, null);
+            Thread thread = new(async () =>
+            {
+                if (user.banned)
+                {
+                    await context.Interaction.RespondAsync("Você esta banido do bot!", ephemeral: true);
+                    return;
+                }
+
+                // execute the command
+                await interactionService.ExecuteCommandAsync(context, null);
+            });
+            thread.Start();
 
             return null;
         }
